@@ -1,0 +1,91 @@
+@import url("./reset.css");
+
+body{
+  overflow-x: hidden;
+}
+
+* {
+  font-family:
+    Inter,
+    Geeza,
+    "Ping Fang",
+    "Binance Plex",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
+/* Світла тема за замовчуванням */
+:root {
+  --bg-color: white;
+  --text-color: #252525;
+  --primary-color: hsl(241.2, 100%, 50%);
+  --bg-net-color:
+    linear-gradient(
+      106deg,
+      rgb(222, 226, 246) 22.98%,
+      rgb(255, 255, 255) 99.14%
+    ),
+    rgb(217, 217, 217);
+  --card-bg:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.02) 100%),
+    #ffffff;
+}
+
+/* Темна тема */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: hsl(240, 1.8%, 10.8%);
+    --text-color: #eaecef;
+    --primary-color: hsl(143.9, 100%, 64.1%);
+    --bg-net-color:
+      linear-gradient(
+        300deg,
+        rgba(219, 220, 229, 0.2) 9.46%,
+        rgba(219, 220, 229, 0) 97.14%
+      ),
+      rgb(27, 27, 28);
+    --card-bg:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+      ),
+      #1c1c1e;
+  }
+}
+
+/* Стилі елементів */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.second-color {
+  color: var(--primary-color);
+}
+
+.second-color-bg {
+  background-color: var(--primary-color);
+}
+
+.ChooseNet-left-bg {
+  background: var(--bg-net-color);
+}
+
+/* Контейнер карточек */
+
+.ChooseNet-rightCard {
+  background: var(--card-bg);
+  border-radius: 16px;
+}

@@ -1,0 +1,16 @@
+.Back-component {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  opacity: 0.8;
+  cursor: pointer;
+}
+.Back-component-icon {
+  width: 16px;
+  height: 16px;
+}
+.Back-component-text {
+  font-weight: 500;
+  line-height: 20px;
+  font-size: 18px;
+}

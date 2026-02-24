@@ -1,0 +1,161 @@
+/* Світла тема */
+:root {
+  --card-border: rgba(0, 0, 0, 0.08);
+  --card-border-hover: rgba(0, 0, 0, 0.15);
+  --card-border-active: hsl(241.2, 100%, 50%);
+}
+
+/* Темна тема */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-border-hover: rgba(255, 255, 255, 0.2);
+    --card-border-active: hsl(143.9, 100%, 64.1%);
+  }
+}
+
+.ChooseNet {
+  max-width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+}
+.ChooseNet-left {
+  padding: 0 15px;
+  max-width: 33.333%;
+  min-width: 325px;
+  width: 100%;
+  background-color: var(--bg-net-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.ChooseNet-left-container {
+  max-width: 305px;
+  width: 100%;
+}
+.ChooseNet-left-logo {
+  max-width: 225px;
+  margin-top: 32px;
+  margin-bottom: 64px;
+}
+.ChooseNet-left-title {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 36px;
+  margin-top: 36px;
+}
+.ChooseNet-left-save-logo {
+  max-width: 300px;
+  width: 100%;
+}
+
+.ChooseNet-right {
+  margin: 0 20px;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.network-cards {
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Общий стиль карточки */
+.card {
+  gap: 15px;
+  cursor: pointer;
+  max-width: 100%;
+  width: 100%;
+  border-radius: 16px;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.card.active {
+  border: 2px solid var(--card-border-active);
+  box-shadow: 0 0 0 3px transparent;
+}
+
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Логотип */
+.card-logo {
+  width: 100%;
+  max-width: 50px;
+  height: 50px;
+}
+
+/* Назва */
+.card-title {
+  font-size: 28px;
+  font-weight: 500;
+  font-weight: 600;
+}
+
+.ChooseNet-right-title {
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 36px;
+  margin-bottom: 36px;
+}
+
+.ChooseNet__button {
+  max-width: 820px;
+  margin: 0 auto;
+  margin-top: 48px;
+  text-align: center;
+  color: #1b1b1c;
+  font-size: 16px;
+  padding: 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.ChooseNet__button:hover {
+  opacity: 0.9;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.ChooseNet__button.disabled:hover {
+  opacity: 0.5;
+}
+
+@media (prefers-color-scheme: light) {
+  .ChooseNet__button {
+    color: #eaecef;
+  }
+}
