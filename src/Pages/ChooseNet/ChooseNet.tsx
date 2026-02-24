@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import SignClient from "@walletconnect/sign-client";
 import { Back } from "../../Components/Back";
@@ -53,7 +54,10 @@ export function ChooseNet() {
 
     try {
       // Налаштовуємо namespace залежно від вибраної мережі
-      const requiredNamespaces =
+      const requiredNamespaces: Record<
+        string,
+        { methods: string[]; chains: string[]; events: string[] }
+      > =
         choosedNet === "ETH"
           ? {
               eip155: {
@@ -63,7 +67,6 @@ export function ChooseNet() {
               },
             }
           : {
-              // TRON через WalletConnect
               tron: {
                 methods: ["tron_signMessage"],
                 chains: ["tron:0x2b6653dc"],
