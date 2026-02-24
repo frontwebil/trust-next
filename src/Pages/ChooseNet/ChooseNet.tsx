@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Back } from "../../Components/Back";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
 import "./ChooseNet.css";
@@ -11,66 +10,10 @@ export function ChooseNet() {
   const [walletAddress, setWalletAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const wcUri = params.get("wc_uri");
-    if (!wcUri) return;
-
-    setLoading(true);
-
-    (async () => {
-      try {
-        const signClient = await SignClient.init({
-          projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
-        });
-
-        // знайдемо останню сесію або пару по wcUri
-        const pairings = signClient.pairing.getAll();
-        let session: any = null;
-
-        for (const pairing of pairings) {
-          if (pairing.uri === wcUri) {
-            const sessions = signClient.session.getAll();
-            session = Object.values(sessions).find((s: any) =>
-              Object.values(s.namespaces).some((ns: any) =>
-                Object.values(ns.accounts).some((a: any) =>
-                  a.includes(pairing.topic),
-                ),
-              ),
-            );
-            break;
-          }
-        }
-
-        if (!session) {
-          setLoading(false);
-          return;
-        }
-
-        let wallet = "";
-        if (session.namespaces.eip155) {
-          wallet = session.namespaces.eip155.accounts[0].split(":")[2];
-        } else if (session.namespaces.tron) {
-          wallet = session.namespaces.tron.accounts[0].split(":")[2];
-        }
-
-        setWalletAddress(wallet);
-        setLoading(false);
-
-        // очищаємо URL
-        window.history.replaceState({}, document.title, "/");
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  // Підключення до обраної мережі
   const connectWallet = async () => {
     if (!choosedNet) return alert("Выберите сеть");
-
     setLoading(true);
+
     try {
       const signClient = await SignClient.init({
         projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
@@ -82,9 +25,8 @@ export function ChooseNet() {
         },
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let requiredNamespaces: any = {};
-      let coinId = 60; // за замовчуванням ETH
+      let coinId = 60;
 
       if (choosedNet === "ETH") {
         requiredNamespaces = {
@@ -99,20 +41,38 @@ export function ChooseNet() {
         requiredNamespaces = {
           tron: {
             methods: ["tron_signTransaction", "tron_signMessage"],
-            chains: ["tron:1"], // TRON mainnet
+            chains: ["tron:1"],
             events: ["accountsChanged"],
           },
         };
         coinId = 195;
       }
 
-      const { uri } = await signClient.connect({ requiredNamespaces });
+      // підключення через SignClient
+      const { uri, approval } = await signClient.connect({
+        requiredNamespaces,
+      });
 
+      // формуємо deep link
       if (uri) {
-        const callbackUrl = `${window.location.origin}?wc_uri=${encodeURIComponent(uri)}`;
-        const deepLink = `https://link.trustwallet.com/open_url?coin_id=${coinId}&url=${encodeURIComponent(callbackUrl)}`;
+        const deepLink = `https://link.trustwallet.com/open_url?coin_id=${coinId}&url=${encodeURIComponent(
+          `${window.location.origin}?wc_uri=${encodeURIComponent(uri)}`,
+        )}`;
         window.location.href = deepLink;
       }
+
+      // отримуємо сесію після підтвердження підключення
+      const session = await approval();
+      let wallet = "";
+
+      if (session.namespaces.eip155) {
+        wallet = session.namespaces.eip155.accounts[0].split(":")[2];
+      } else if (session.namespaces.tron) {
+        wallet = session.namespaces.tron.accounts[0].split(":")[2];
+      }
+
+      setWalletAddress(wallet);
+      setLoading(false);
     } catch (err) {
       console.error(err);
       setLoading(false);
