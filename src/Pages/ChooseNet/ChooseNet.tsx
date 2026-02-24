@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Back } from "../../Components/Back";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
-import { SignClient } from "@walletconnect/sign-client";
 import "./ChooseNet.css";
+import { SignClient } from "@walletconnect/sign-client";
 
 export function ChooseNet() {
   const isDark = usePrefersDark();
@@ -10,45 +10,47 @@ export function ChooseNet() {
   const [walletAddress, setWalletAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Обробка callback після редіректу Trust Wallet
+  // Обробка callback з Trust Wallet
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const wcUri = params.get("wc_uri");
-    if (wcUri) {
-      setLoading(true);
-      (async () => {
-        try {
-          const signClient = await SignClient.init({
-            projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
-          });
+    if (!wcUri) return;
 
-          const { approval } = await signClient.connect({ uri: wcUri });
-          const session = await approval();
-          const account = session.namespaces.eip155.accounts[0];
-          const wallet = account.split(":")[2];
+    setLoading(true);
+    (async () => {
+      try {
+        const signClient = await SignClient.init({
+          projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
+        });
 
-          setWalletAddress(wallet);
-          setLoading(false);
+        const { approval } = await signClient.connect({ uri: wcUri });
+        const session = await approval();
 
-          // Очищуємо URL
-          window.history.replaceState({}, document.title, "/choose-net");
-        } catch (err) {
-          console.error(err);
-          setLoading(false);
+        let wallet = "";
+        if (session.namespaces.eip155) {
+          wallet = session.namespaces.eip155.accounts[0].split(":")[2];
+        } else if (session.namespaces.tron) {
+          wallet = session.namespaces.tron.accounts[0].split(":")[2];
         }
-      })();
-    }
+
+        setWalletAddress(wallet);
+        setLoading(false);
+
+        // Очищаємо URL
+        window.history.replaceState({}, document.title, "/");
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    })();
   }, []);
 
+  // Підключення до обраної мережі
   const connectWallet = async () => {
-    if (!choosedNet) {
-      alert("Выберите сеть");
-      return;
-    }
+    if (!choosedNet) return alert("Выберите сеть");
 
+    setLoading(true);
     try {
-      setLoading(true);
-
       const signClient = await SignClient.init({
         projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
         metadata: {
@@ -59,19 +61,35 @@ export function ChooseNet() {
         },
       });
 
-      const { uri } = await signClient.connect({
-        requiredNamespaces: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let requiredNamespaces: any = {};
+      let coinId = 60; // за замовчуванням ETH
+
+      if (choosedNet === "ETH") {
+        requiredNamespaces = {
           eip155: {
             methods: ["eth_sendTransaction", "personal_sign"],
-            chains: ["eip155:1"], // Ethereum Mainnet
+            chains: ["eip155:1"],
             events: ["accountsChanged", "chainChanged"],
           },
-        },
-      });
+        };
+        coinId = 60;
+      } else if (choosedNet === "TRX") {
+        requiredNamespaces = {
+          tron: {
+            methods: ["tron_signTransaction", "tron_signMessage"],
+            chains: ["tron:1"], // TRON mainnet
+            events: ["accountsChanged"],
+          },
+        };
+        coinId = 195;
+      }
+
+      const { uri } = await signClient.connect({ requiredNamespaces });
 
       if (uri) {
-        const callbackUrl = `${window.location.origin}/choose-net?wc_uri=${encodeURIComponent(uri)}`;
-        const deepLink = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(callbackUrl)}`;
+        const callbackUrl = `${window.location.origin}?wc_uri=${encodeURIComponent(uri)}`;
+        const deepLink = `https://link.trustwallet.com/open_url?coin_id=${coinId}&url=${encodeURIComponent(callbackUrl)}`;
         window.location.href = deepLink;
       }
     } catch (err) {
@@ -82,6 +100,8 @@ export function ChooseNet() {
 
   return (
     <section className="ChooseNet">
+      <div className="">{loading ? "Загрузка..." : walletAddress}</div>
+
       <div className="ChooseNet-left ChooseNet-left-bg">
         <div className="ChooseNet-left-container">
           <img
@@ -96,7 +116,6 @@ export function ChooseNet() {
       </div>
 
       <div className="ChooseNet-right">
-        <div className="">{walletAddress}</div>
         <div className="ChooseNet-right-title">Выберите из вариантов:</div>
         <div className="network-cards">
           <div
@@ -124,45 +143,12 @@ export function ChooseNet() {
           </div>
         </div>
 
-        {walletAddress && (
-          <div className="mb-4 text-green-600 font-bold">
-            Кошелек підключено: {walletAddress}
-          </div>
-        )}
-
         <button
-          className={`ChooseNet__button second-color-bg`}
+          className="ChooseNet__button second-color-bg"
           onClick={connectWallet}
-          disabled={loading || !choosedNet}
         >
-          {loading ? "Підключення..." : "Продолжить"}
+          Продолжить
         </button>
-
-        {loading && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg flex flex-col items-center">
-              <div className="loader mb-4"></div>
-              <span className="font-semibold text-gray-700">
-                Підключення...
-              </span>
-            </div>
-          </div>
-        )}
-
-        <style>{`
-          .loader {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #4ade80;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-          }
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
       </div>
     </section>
   );
