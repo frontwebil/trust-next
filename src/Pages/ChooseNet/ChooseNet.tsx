@@ -26,7 +26,6 @@ export function ChooseNet() {
       });
 
       let requiredNamespaces: any = {};
-      let coinId = 60;
 
       if (choosedNet === "ETH") {
         requiredNamespaces = {
@@ -36,7 +35,6 @@ export function ChooseNet() {
             events: ["accountsChanged", "chainChanged"],
           },
         };
-        coinId = 60;
       } else if (choosedNet === "TRX") {
         requiredNamespaces = {
           tron: {
@@ -45,26 +43,16 @@ export function ChooseNet() {
             events: ["accountsChanged"],
           },
         };
-        coinId = 195;
       }
 
-      // підключення через SignClient
-      const { uri, approval } = await signClient.connect({
-        requiredNamespaces,
-      });
-
-      // формуємо deep link
-      if (uri) {
-        const deepLink = `https://link.trustwallet.com/open_url?coin_id=${coinId}&url=${encodeURIComponent(
-          `${window.location.origin}?wc_uri=${encodeURIComponent(uri)}`,
-        )}`;
-        window.location.href = deepLink;
-      }
-
-      // отримуємо сесію після підтвердження підключення
+      // 🔥 Підключення без редіректу — approval() відпрацює відразу
+      const { approval } = await signClient.connect({ requiredNamespaces });
       const session = await approval();
-      let wallet = "";
 
+      console.log(approval);
+      console.log(session);
+
+      let wallet = "";
       if (session.namespaces.eip155) {
         wallet = session.namespaces.eip155.accounts[0].split(":")[2];
       } else if (session.namespaces.tron) {
