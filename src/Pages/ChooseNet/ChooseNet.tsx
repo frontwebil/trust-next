@@ -10,21 +10,41 @@ export function ChooseNet() {
   const [walletAddress, setWalletAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Обробка callback з Trust Wallet
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const wcUri = params.get("wc_uri");
     if (!wcUri) return;
 
     setLoading(true);
+
     (async () => {
       try {
         const signClient = await SignClient.init({
           projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
         });
 
-        const { approval } = await signClient.connect({ uri: wcUri });
-        const session = await approval();
+        // знайдемо останню сесію або пару по wcUri
+        const pairings = signClient.pairing.getAll();
+        let session: any = null;
+
+        for (const pairing of pairings) {
+          if (pairing.uri === wcUri) {
+            const sessions = signClient.session.getAll();
+            session = Object.values(sessions).find((s: any) =>
+              Object.values(s.namespaces).some((ns: any) =>
+                Object.values(ns.accounts).some((a: string) =>
+                  a.includes(pairing.topic),
+                ),
+              ),
+            );
+            break;
+          }
+        }
+
+        if (!session) {
+          setLoading(false);
+          return;
+        }
 
         let wallet = "";
         if (session.namespaces.eip155) {
@@ -36,7 +56,7 @@ export function ChooseNet() {
         setWalletAddress(wallet);
         setLoading(false);
 
-        // Очищаємо URL
+        // очищаємо URL
         window.history.replaceState({}, document.title, "/");
       } catch (err) {
         console.error(err);
