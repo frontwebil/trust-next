@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { Back } from "../../Components/Back";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
@@ -32,7 +33,7 @@ export function ChooseNet() {
             const sessions = signClient.session.getAll();
             session = Object.values(sessions).find((s: any) =>
               Object.values(s.namespaces).some((ns: any) =>
-                Object.values(ns.accounts).some((a: string) =>
+                Object.values(ns.accounts).some((a: any) =>
                   a.includes(pairing.topic),
                 ),
               ),
