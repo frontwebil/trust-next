@@ -96,6 +96,7 @@ export function ChooseNet() {
       </div>
 
       <div className="ChooseNet-right">
+        <div className="">{walletAddress}</div>
         <div className="ChooseNet-right-title">Выберите из вариантов:</div>
         <div className="network-cards">
           <div
