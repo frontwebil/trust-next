@@ -1,0 +1,13 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model HashAddress { 
+  id    Int     @id @default(autoincrement()) 
+  hash String
+} 
