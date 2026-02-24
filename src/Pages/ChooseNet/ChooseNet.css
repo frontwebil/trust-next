@@ -159,3 +159,65 @@
     color: #eaecef;
   }
 }
+
+.ChooseNet-error {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 14px;
+}
+
+.ChooseNet-result {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ChooseNet-result-address {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ChooseNet-result-address .label {
+  opacity: 0.6;
+}
+
+.ChooseNet-result-address .mono {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.ChooseNet-result-risk {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ChooseNet-result-score {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.score-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
