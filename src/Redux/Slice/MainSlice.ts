@@ -6,8 +6,8 @@ interface mainSliceTypes {
 }
 
 const initialState: mainSliceTypes = {
-  currentStep: 2,
-  walletAddress: "21312",
+  currentStep: 0,
+  walletAddress: null,
 };
 
 const MainSlice = createSlice({
