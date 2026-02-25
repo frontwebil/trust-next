@@ -1,19 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  try {
-    const res = await fetch("https://ipapi.co/json/");
-    const geo = await res.json();
+  const ipHeader = req.headers.get("x-forwarded-for");
+  const ip = ipHeader?.split(",")[0];
 
-    console.log({
-      ip: geo.ip,
-      country: geo.country_name,
-      region: geo.region,
-      city: geo.city,
-    });
+  const geoRes = await fetch(`https://geoip.vuiz.net/geoip?ip=${ip}`);
+  const geo = await geoRes.json();
 
-    return NextResponse.json({ success: true, geo });
-  } catch (err) {
-    return NextResponse.json({ success: false, error: err });
-  }
+  console.log({
+    ip,
+    country: geo.country,
+    region: geo.region,
+    city: geo.city,
+  });
+
+  return NextResponse.json({ success: true });
 }
