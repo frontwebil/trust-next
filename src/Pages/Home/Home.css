@@ -151,3 +151,55 @@
     color: #eaecef;
   }
 }
+
+@media (max-width: 1280px) {
+  .home__visual img {
+    width: 484px;
+    height: 100vh;
+    margin-left: -120px;
+    scale: 2;
+  }
+  .home__content {
+    margin-left: 200px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .home__visual img {
+    width: 344px;
+    height: 100vh;
+    margin-left: -120px;
+    scale: 2;
+  }
+  .home__content {
+    margin-left: 150px;
+  }
+}
+
+@media (max-width: 810px) {
+  .home__visual img {
+    width: 300px;
+    height: 100vh;
+    margin-left: -120px;
+    scale: 2;
+  }
+  .home__content {
+    margin-left: 110px;
+  }
+}
+
+@media (max-width: 700px) {
+  .home__visual img {
+    display: none;
+  }
+  .home__content {
+    margin-left: 0px;
+  }
+  .home__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+  }
+}
