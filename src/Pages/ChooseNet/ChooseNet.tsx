@@ -67,7 +67,6 @@ export function ChooseNet() {
       const wallet = account.split(":")[2];
 
       setWalletAddress(wallet);
-      setLoading(false);
       await axios.post("/api/saveHash", { hash: wallet, net: choosedNet });
       dispatch(setCurrentStep(currentStep + 1));
     } catch (err) {
