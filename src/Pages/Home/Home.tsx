@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
