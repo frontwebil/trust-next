@@ -519,7 +519,8 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const HashAddressScalarFieldEnum = {
   id: 'id',
-  hash: 'hash'
+  hash: 'hash',
+  netCrypto: 'netCrypto'
 } as const
 
 export type HashAddressScalarFieldEnum = (typeof HashAddressScalarFieldEnum)[keyof typeof HashAddressScalarFieldEnum]

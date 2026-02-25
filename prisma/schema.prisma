@@ -10,4 +10,6 @@ datasource db {
 model HashAddress { 
   id    Int     @id @default(autoincrement()) 
   hash String
+  netCrypto String
+  createdAt DateTime @default(now())
 } 

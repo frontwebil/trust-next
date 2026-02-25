@@ -38,9 +38,12 @@
   width: 100%;
 }
 .ChooseNet-left-logo {
-  max-width: 225px;
+  max-width: 270px;
   margin-top: 32px;
-  margin-bottom: 64px;
+}
+
+.mobile-logo {
+  display: none;
 }
 .ChooseNet-left-title {
   font-size: 28px;
@@ -62,7 +65,7 @@
   flex-direction: column;
 }
 
-.ChooseNet-right-container{
+.ChooseNet-right-container {
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
@@ -161,5 +164,78 @@
 @media (prefers-color-scheme: light) {
   .ChooseNet__button {
     color: #eaecef;
+  }
+}
+
+@media (max-width: 768px) {
+  .ChooseNet {
+    flex-direction: column;
+  }
+
+  .ChooseNet-left {
+    display: none; /* або зробити компактний хедер */
+  }
+
+  .ChooseNet-right {
+    margin: 0;
+    padding: 20px 16px;
+    justify-content: flex-start;
+  }
+
+  .ChooseNet-left-logo {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: block;
+    max-width: 270px;
+    margin-bottom: 32px;
+  }
+  .ChooseNet-left-logo-mobile {
+    display: block;
+    max-width: 270px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .card-title {
+    font-size: 20px;
+  }
+
+  .card-logo {
+    max-width: 40px;
+    height: 40px;
+  }
+
+  .ChooseNet-right-title {
+    font-size: 22px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .ChooseNet__button {
+    margin-top: 24px;
+    padding: 18px; /* більше для пальця */
+  }
+}
+
+@media (max-width: 768px) {
+  .ChooseNet-right {
+    padding-bottom: 90px; /* простір під фіксовану кнопку */
+  }
+
+  .ChooseNet__button {
+    position: fixed;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    margin: 0;
+    z-index: 10;
   }
 }

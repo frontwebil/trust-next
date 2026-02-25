@@ -37,16 +37,19 @@ export type HashAddressSumAggregateOutputType = {
 export type HashAddressMinAggregateOutputType = {
   id: number | null
   hash: string | null
+  netCrypto: string | null
 }
 
 export type HashAddressMaxAggregateOutputType = {
   id: number | null
   hash: string | null
+  netCrypto: string | null
 }
 
 export type HashAddressCountAggregateOutputType = {
   id: number
   hash: number
+  netCrypto: number
   _all: number
 }
 
@@ -62,16 +65,19 @@ export type HashAddressSumAggregateInputType = {
 export type HashAddressMinAggregateInputType = {
   id?: true
   hash?: true
+  netCrypto?: true
 }
 
 export type HashAddressMaxAggregateInputType = {
   id?: true
   hash?: true
+  netCrypto?: true
 }
 
 export type HashAddressCountAggregateInputType = {
   id?: true
   hash?: true
+  netCrypto?: true
   _all?: true
 }
 
@@ -164,6 +170,7 @@ export type HashAddressGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type HashAddressGroupByOutputType = {
   id: number
   hash: string
+  netCrypto: string
   _count: HashAddressCountAggregateOutputType | null
   _avg: HashAddressAvgAggregateOutputType | null
   _sum: HashAddressSumAggregateOutputType | null
@@ -192,11 +199,13 @@ export type HashAddressWhereInput = {
   NOT?: Prisma.HashAddressWhereInput | Prisma.HashAddressWhereInput[]
   id?: Prisma.IntFilter<"HashAddress"> | number
   hash?: Prisma.StringFilter<"HashAddress"> | string
+  netCrypto?: Prisma.StringFilter<"HashAddress"> | string
 }
 
 export type HashAddressOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   hash?: Prisma.SortOrder
+  netCrypto?: Prisma.SortOrder
 }
 
 export type HashAddressWhereUniqueInput = Prisma.AtLeast<{
@@ -205,11 +214,13 @@ export type HashAddressWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.HashAddressWhereInput[]
   NOT?: Prisma.HashAddressWhereInput | Prisma.HashAddressWhereInput[]
   hash?: Prisma.StringFilter<"HashAddress"> | string
+  netCrypto?: Prisma.StringFilter<"HashAddress"> | string
 }, "id">
 
 export type HashAddressOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   hash?: Prisma.SortOrder
+  netCrypto?: Prisma.SortOrder
   _count?: Prisma.HashAddressCountOrderByAggregateInput
   _avg?: Prisma.HashAddressAvgOrderByAggregateInput
   _max?: Prisma.HashAddressMaxOrderByAggregateInput
@@ -223,43 +234,52 @@ export type HashAddressScalarWhereWithAggregatesInput = {
   NOT?: Prisma.HashAddressScalarWhereWithAggregatesInput | Prisma.HashAddressScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"HashAddress"> | number
   hash?: Prisma.StringWithAggregatesFilter<"HashAddress"> | string
+  netCrypto?: Prisma.StringWithAggregatesFilter<"HashAddress"> | string
 }
 
 export type HashAddressCreateInput = {
   hash: string
+  netCrypto: string
 }
 
 export type HashAddressUncheckedCreateInput = {
   id?: number
   hash: string
+  netCrypto: string
 }
 
 export type HashAddressUpdateInput = {
   hash?: Prisma.StringFieldUpdateOperationsInput | string
+  netCrypto?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type HashAddressUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   hash?: Prisma.StringFieldUpdateOperationsInput | string
+  netCrypto?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type HashAddressCreateManyInput = {
   id?: number
   hash: string
+  netCrypto: string
 }
 
 export type HashAddressUpdateManyMutationInput = {
   hash?: Prisma.StringFieldUpdateOperationsInput | string
+  netCrypto?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type HashAddressUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   hash?: Prisma.StringFieldUpdateOperationsInput | string
+  netCrypto?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type HashAddressCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hash?: Prisma.SortOrder
+  netCrypto?: Prisma.SortOrder
 }
 
 export type HashAddressAvgOrderByAggregateInput = {
@@ -269,11 +289,13 @@ export type HashAddressAvgOrderByAggregateInput = {
 export type HashAddressMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hash?: Prisma.SortOrder
+  netCrypto?: Prisma.SortOrder
 }
 
 export type HashAddressMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   hash?: Prisma.SortOrder
+  netCrypto?: Prisma.SortOrder
 }
 
 export type HashAddressSumOrderByAggregateInput = {
@@ -297,24 +319,28 @@ export type IntFieldUpdateOperationsInput = {
 export type HashAddressSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   hash?: boolean
+  netCrypto?: boolean
 }, ExtArgs["result"]["hashAddress"]>
 
 export type HashAddressSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   hash?: boolean
+  netCrypto?: boolean
 }, ExtArgs["result"]["hashAddress"]>
 
 export type HashAddressSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   hash?: boolean
+  netCrypto?: boolean
 }, ExtArgs["result"]["hashAddress"]>
 
 export type HashAddressSelectScalar = {
   id?: boolean
   hash?: boolean
+  netCrypto?: boolean
 }
 
-export type HashAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hash", ExtArgs["result"]["hashAddress"]>
+export type HashAddressOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hash" | "netCrypto", ExtArgs["result"]["hashAddress"]>
 
 export type $HashAddressPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "HashAddress"
@@ -322,6 +348,7 @@ export type $HashAddressPayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     hash: string
+    netCrypto: string
   }, ExtArgs["result"]["hashAddress"]>
   composites: {}
 }
@@ -747,6 +774,7 @@ export interface Prisma__HashAddressClient<T, Null = never, ExtArgs extends runt
 export interface HashAddressFieldRefs {
   readonly id: Prisma.FieldRef<"HashAddress", 'Int'>
   readonly hash: Prisma.FieldRef<"HashAddress", 'String'>
+  readonly netCrypto: Prisma.FieldRef<"HashAddress", 'String'>
 }
     
 

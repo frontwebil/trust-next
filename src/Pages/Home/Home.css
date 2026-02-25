@@ -24,6 +24,7 @@
 .home__content-img {
   max-width: 270px;
 }
+
 .home__content-underlogo {
   font-size: 16px;
   margin-left: 50px;
@@ -50,7 +51,8 @@
 }
 
 .home__content-input label {
-  display: inline-block;
+  display: flex;
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   border: 2px solid hsl(240, 1%, 24%);
@@ -112,7 +114,8 @@
 
 @media (prefers-color-scheme: light) {
   .home__content-input label {
-    display: inline-block;
+    display: flex;
+    flex-shrink: 0;
     width: 20px;
     height: 20px;
     border: 2px solid hsl(0, 0%, 74%);
@@ -201,5 +204,30 @@
     align-items: center;
     height: 100%;
     position: relative;
+  }
+}
+
+@media (max-width: 500px) {
+  .home__content-text {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .home__content-input p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .home__content-text {
+    font-size: 20px;
+    line-height: 28px;
+    margin-top: 48px;
+    margin-bottom: 24px;
+  }
+  .home__content-input p {
+    font-size: 13px;
+  }
+  .home__content-button {
+    margin-top: 36px;
   }
 }

