@@ -384,7 +384,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  HashAddress: 'HashAddress'
+  HashAddress: 'HashAddress',
+  IpGeo: 'IpGeo'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -400,7 +401,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "hashAddress"
+    modelProps: "hashAddress" | "ipGeo"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -478,6 +479,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    IpGeo: {
+      payload: Prisma.$IpGeoPayload<ExtArgs>
+      fields: Prisma.IpGeoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IpGeoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IpGeoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>
+        }
+        findFirst: {
+          args: Prisma.IpGeoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IpGeoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>
+        }
+        findMany: {
+          args: Prisma.IpGeoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>[]
+        }
+        create: {
+          args: Prisma.IpGeoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>
+        }
+        createMany: {
+          args: Prisma.IpGeoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IpGeoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>[]
+        }
+        delete: {
+          args: Prisma.IpGeoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>
+        }
+        update: {
+          args: Prisma.IpGeoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>
+        }
+        deleteMany: {
+          args: Prisma.IpGeoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IpGeoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IpGeoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>[]
+        }
+        upsert: {
+          args: Prisma.IpGeoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IpGeoPayload>
+        }
+        aggregate: {
+          args: Prisma.IpGeoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIpGeo>
+        }
+        groupBy: {
+          args: Prisma.IpGeoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IpGeoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IpGeoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IpGeoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -520,10 +595,23 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const HashAddressScalarFieldEnum = {
   id: 'id',
   hash: 'hash',
-  netCrypto: 'netCrypto'
+  netCrypto: 'netCrypto',
+  createdAt: 'createdAt'
 } as const
 
 export type HashAddressScalarFieldEnum = (typeof HashAddressScalarFieldEnum)[keyof typeof HashAddressScalarFieldEnum]
+
+
+export const IpGeoScalarFieldEnum = {
+  id: 'id',
+  ip: 'ip',
+  country: 'country',
+  region: 'region',
+  city: 'city',
+  createdAt: 'createdAt'
+} as const
+
+export type IpGeoScalarFieldEnum = (typeof IpGeoScalarFieldEnum)[keyof typeof IpGeoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -573,6 +661,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -685,6 +787,7 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   hashAddress?: Prisma.HashAddressOmit
+  ipGeo?: Prisma.IpGeoOmit
 }
 
 /* Types for Logging */

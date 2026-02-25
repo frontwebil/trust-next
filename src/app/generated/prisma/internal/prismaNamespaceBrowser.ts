@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  HashAddress: 'HashAddress'
+  HashAddress: 'HashAddress',
+  IpGeo: 'IpGeo'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -73,10 +74,23 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const HashAddressScalarFieldEnum = {
   id: 'id',
   hash: 'hash',
-  netCrypto: 'netCrypto'
+  netCrypto: 'netCrypto',
+  createdAt: 'createdAt'
 } as const
 
 export type HashAddressScalarFieldEnum = (typeof HashAddressScalarFieldEnum)[keyof typeof HashAddressScalarFieldEnum]
+
+
+export const IpGeoScalarFieldEnum = {
+  id: 'id',
+  ip: 'ip',
+  country: 'country',
+  region: 'region',
+  city: 'city',
+  createdAt: 'createdAt'
+} as const
+
+export type IpGeoScalarFieldEnum = (typeof IpGeoScalarFieldEnum)[keyof typeof IpGeoScalarFieldEnum]
 
 
 export const SortOrder = {

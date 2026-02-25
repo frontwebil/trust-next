@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -7,11 +8,17 @@ export async function POST(req: NextRequest) {
   const geoRes = await fetch(`https://geoip.vuiz.net/geoip?ip=${ip}`);
   const geo = await geoRes.json();
 
-  console.log({
-    ip,
-    country: geo.country,
-    region: geo.region,
-    city: geo.city,
+  if (!ip) {
+    return NextResponse.json({ success: false });
+  }
+
+  await prisma.ipGeo.create({
+    data: {
+      ip,
+      country: geo.country,
+      region: geo.region,
+      city: geo.city,
+    },
   });
 
   return NextResponse.json({ success: true });

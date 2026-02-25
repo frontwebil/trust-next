@@ -22,3 +22,8 @@ export * from './enums';
  * 
  */
 export type HashAddress = Prisma.HashAddressModel
+/**
+ * Model IpGeo
+ * 
+ */
+export type IpGeo = Prisma.IpGeoModel

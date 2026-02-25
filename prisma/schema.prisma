@@ -13,3 +13,12 @@ model HashAddress {
   netCrypto String
   createdAt DateTime @default(now())
 } 
+
+model IpGeo {
+  id       Int      @id @default(autoincrement())
+  ip       String
+  country  String
+  region   String
+  city     String
+  createdAt DateTime @default(now())
+}
