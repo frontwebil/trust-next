@@ -16,6 +16,8 @@ export function Home() {
     setIsChecked(!isChecked);
   };
 
+  if (isDark == null) return;
+
   return (
     <section className="home">
       <div className="home__container">
@@ -23,7 +25,11 @@ export function Home() {
           <img src="/home.svg" alt="home logo" />
         </div>
         <div className="home__content">
-          <img src={isDark ? "/logo.svg" : "/logo-white.svg"} alt="" className="home__content-img"/>
+          <img
+            src={isDark ? "/logo.svg" : "/logo-white.svg"}
+            alt=""
+            className="home__content-img"
+          />
           <h3 className="home__content-underlogo second-color">
             for AML Analysis
           </h3>

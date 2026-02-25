@@ -4,7 +4,7 @@ interface mainSliceTypes {
   currentStep: number;
 }
 
-const initialState: mainSliceTypes = { currentStep: 1 };
+const initialState: mainSliceTypes = { currentStep: 0 };
 
 const MainSlice = createSlice({
   name: "mainSlice",
