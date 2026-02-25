@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
 import type { RootState } from "../../Redux/store";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
+import Image from "next/image";
 
 export function Home() {
   const isDark = usePrefersDark();
@@ -22,10 +23,12 @@ export function Home() {
     <section className="home">
       <div className="home__container">
         <div className="home__visual">
-          <img src="/home.svg" alt="home logo" />
+          <Image width={1000} height={5125} src="/home.svg" alt="home logo" />
         </div>
         <div className="home__content">
-          <img
+          <Image
+            width={270}
+            height={42}
             src={isDark ? "/logo.svg" : "/logo-white.svg"}
             alt=""
             className="home__content-img"

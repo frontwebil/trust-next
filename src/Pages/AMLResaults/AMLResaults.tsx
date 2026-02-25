@@ -1,14 +1,10 @@
-/* eslint-disable react-hooks/purity */
-// Pages/AMLResult/AMLResult.tsx
 "use client";
 
+import { useDispatch, useSelector } from "react-redux";
 import "./AMLResaults.css";
-
-interface AMLResultProps {
-  address: string;
-  riskScore: number;
-  onRepeat: () => void;
-}
+import { RootState } from "@/Redux/store";
+import { setCurrentStep } from "@/Redux/Slice/MainSlice";
+import { useEffect } from "react";
 
 const getRiskLevel = (score: number) => {
   if (score <= 30) return { label: "Low Risk", color: "green" };
@@ -16,34 +12,46 @@ const getRiskLevel = (score: number) => {
   return { label: "High Risk", color: "red" };
 };
 
-export function AMLResult({ address, riskScore, onRepeat }: AMLResultProps) {
+export function AMLResult({ onRepeat }: { onRepeat: () => void }) {
+  const dispatch = useDispatch();
+
+  const { walletAddress, currentStep } = useSelector(
+    (store: RootState) => store.main,
+  );
+
+  if (!walletAddress) return null;
+
+  const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+
+  const randomPercent = () => Math.floor(Math.random() * 85) + 1;
+
+  const riskScore = randomPercent();
   const risk = getRiskLevel(riskScore);
 
-  const shortAddress = address
-    ? `${address.slice(0, 6)}...${address.slice(-4)}`
-    : "0x00...0000";
-
-  const exchangeLinks = Math.floor(Math.random() * 40) + 60; // 60–99%
-  const mixerLinks = riskScore > 65 ? Math.floor(Math.random() * 30) + 10 : 0;
-  const staking = Math.random() > 0.4;
+  const exchangeLinks = randomPercent();
+  const mixerLinks = randomPercent();
+  const staking = Math.random() > 0.5;
   const walletAge = `${Math.floor(Math.random() * 3) + 1} года ${Math.floor(Math.random() * 11) + 1} мес.`;
+
+  useEffect(() => {
+    if (!walletAddress) {
+      dispatch(setCurrentStep(currentStep - 2));
+    }
+  }, [walletAddress, currentStep, dispatch]);
 
   return (
     <div className="AMLResult">
       <div className="AMLResult-card">
-        {/* Статус */}
         <div className="AMLResult-status">
           <span className="AMLResult-status-dot" />
           Проверка завершена успешно
         </div>
 
-        {/* Адреса */}
         <div className="AMLResult-address-block">
           <span className="AMLResult-label">Адрес кошелька</span>
           <span className="AMLResult-address">{shortAddress}</span>
         </div>
 
-        {/* Ризик скор */}
         <div className="AMLResult-score-block">
           <div className="AMLResult-score-top">
             <span className="AMLResult-label">Общий риск-скор</span>
@@ -60,7 +68,6 @@ export function AMLResult({ address, riskScore, onRepeat }: AMLResultProps) {
           </div>
         </div>
 
-        {/* Деталізація */}
         <div className="AMLResult-details">
           <div className="AMLResult-details-title">Детализация</div>
 
@@ -82,7 +89,7 @@ export function AMLResult({ address, riskScore, onRepeat }: AMLResultProps) {
             <div className="AMLResult-row-right">
               <div className="AMLResult-mini-bar-track">
                 <div
-                  className={`AMLResult-mini-bar-fill fill-${mixerLinks > 0 ? "red" : "green"}`}
+                  className={`AMLResult-mini-bar-fill fill-${mixerLinks > 50 ? "red" : "green"}`}
                   style={{ width: `${mixerLinks}%` }}
                 />
               </div>
@@ -105,7 +112,6 @@ export function AMLResult({ address, riskScore, onRepeat }: AMLResultProps) {
           </div>
         </div>
 
-        {/* Кнопка */}
         <button className="AMLResult-button second-color-bg" onClick={onRepeat}>
           Повторить проверку
         </button>

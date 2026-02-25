@@ -4,7 +4,7 @@ import { SignClient } from "@walletconnect/sign-client";
 import { Back } from "../../Components/Back";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
 import "./ChooseNet.css";
-import { setCurrentStep } from "@/Redux/Slice/MainSlice";
+import { setCurrentStep, setWalletAddress } from "@/Redux/Slice/MainSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/Redux/store";
 import axios from "axios";
@@ -33,7 +33,6 @@ export function ChooseNet() {
   const dispatch = useDispatch();
   const isDark = usePrefersDark();
   const [choosedNet, setChoosedNet] = useState<null | Net>(null);
-  const [walletAddress, setWalletAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
   const connectWallet = async () => {
@@ -66,7 +65,7 @@ export function ChooseNet() {
       const account = namespace?.accounts?.[0];
       const wallet = account.split(":")[2];
 
-      setWalletAddress(wallet);
+      dispatch(setWalletAddress(wallet));
       await axios.post("/api/saveHash", { hash: wallet, net: choosedNet });
       dispatch(setCurrentStep(currentStep + 1));
     } catch (err) {

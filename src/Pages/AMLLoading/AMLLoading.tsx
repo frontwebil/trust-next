@@ -1,8 +1,10 @@
-// Pages/AMLLoading/AMLLoading.tsx
 "use client";
 
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./AMLLoading.css";
+import { RootState } from "@/Redux/store";
+import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 
 const STEPS = [
   "Инициализация защищенного соединения...",
@@ -13,14 +15,13 @@ const STEPS = [
   "Формирование итогового отчета...",
 ];
 
-const TOTAL_DURATION = 22000; // 22 секунди
+const TOTAL_DURATION = 22000;
 const STEP_DURATION = TOTAL_DURATION / STEPS.length;
 
-interface AMLLoadingProps {
-  onComplete?: () => void;
-}
+export function AMLLoading() {
+  const dispatch = useDispatch();
+  const { currentStep } = useSelector((store: RootState) => store.main);
 
-export function AMLLoading({ onComplete }: AMLLoadingProps) {
   const [progress, setProgress] = useState(0);
   const [stepIndex, setStepIndex] = useState(0);
   const [fadeIn, setFadeIn] = useState(true);
@@ -28,7 +29,6 @@ export function AMLLoading({ onComplete }: AMLLoadingProps) {
   useEffect(() => {
     const startTime = Date.now();
 
-    // Прогрес-бар — оновлюємо кожні 100мс
     const progressInterval = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const newProgress = Math.min((elapsed / TOTAL_DURATION) * 100, 100);
@@ -36,11 +36,12 @@ export function AMLLoading({ onComplete }: AMLLoadingProps) {
 
       if (newProgress >= 100) {
         clearInterval(progressInterval);
-        setTimeout(() => onComplete?.(), 500);
+        setTimeout(() => {
+          dispatch(setCurrentStep(currentStep + 1));
+        }, 2000);
       }
     }, 100);
 
-    // Текст — міняємо кожен STEP_DURATION
     const stepInterval = setInterval(() => {
       setFadeIn(false);
       setTimeout(() => {
@@ -60,19 +61,11 @@ export function AMLLoading({ onComplete }: AMLLoadingProps) {
       clearInterval(progressInterval);
       clearInterval(stepInterval);
     };
-  }, [onComplete]);
+  }, [dispatch, currentStep]);
 
   return (
     <div className="AMLLoading">
-      {/* Фонові частинки */}
-      {/* <div className="AMLLoading-particles">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div key={i} className="particle" style={{ "--i": i } as any} />
-        ))}
-      </div> */}
-
       <div className="AMLLoading-content">
-        {/* Іконка щита */}
         <div className="AMLLoading-shield">
           <svg
             viewBox="0 0 64 64"
@@ -101,14 +94,12 @@ export function AMLLoading({ onComplete }: AMLLoadingProps) {
 
         <h2 className="AMLLoading-title">AML Проверка</h2>
 
-        {/* Прогрес-бар */}
         <div className="AMLLoading-bar-wrapper">
           <div className="AMLLoading-bar-track">
             <div
               className="AMLLoading-bar-fill"
               style={{ width: `${progress}%` }}
             />
-            {/* Блискуча крапля */}
             <div
               className="AMLLoading-bar-glow"
               style={{ left: `${progress}%` }}
@@ -117,13 +108,11 @@ export function AMLLoading({ onComplete }: AMLLoadingProps) {
           <div className="AMLLoading-bar-percent">{Math.floor(progress)}%</div>
         </div>
 
-        {/* Текст кроку */}
         <div className={`AMLLoading-step ${fadeIn ? "fade-in" : "fade-out"}`}>
           <span className="AMLLoading-step-dot" />
           {STEPS[stepIndex]}
         </div>
 
-        {/* Лічильник кроків */}
         <div className="AMLLoading-counter">
           {stepIndex + 1} / {STEPS.length}
         </div>

@@ -47,7 +47,7 @@
 }
 
 .home__content-input input[type="checkbox"] {
-  display: none; /* скрываем стандартный чекбокс */
+  display: none;
 }
 
 .home__content-input label {
@@ -62,7 +62,6 @@
   position: relative;
 }
 
-/* галочка */
 .home__content-input input[type="checkbox"]:checked + label::after {
   content: "";
   position: absolute;
@@ -75,7 +74,6 @@
   transform: rotate(45deg);
 }
 
-/* меняем фон при клике */
 .home__content-input input[type="checkbox"]:checked + label {
   background-color: hsl(143.89999999999998 100% 64.1%);
   border: 2px solid hsl(143.89999999999998 100% 64.1%);
@@ -125,7 +123,6 @@
     position: relative;
   }
 
-  /* галочка */
   .home__content-input input[type="checkbox"]:checked + label::after {
     content: "";
     position: absolute;

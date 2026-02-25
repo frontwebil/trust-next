@@ -39,11 +39,7 @@ export default function Page() {
       {currentStep == 1 && <ChooseNet />}
       {currentStep == 2 && <AMLLoading />}
       {currentStep == 3 && (
-        <AMLResult
-          address={"3214312412412"}
-          riskScore={32}
-          onRepeat={() => dispatch(setCurrentStep(0))}
-        />
+        <AMLResult onRepeat={() => dispatch(setCurrentStep(0))} />
       )}
     </>
   );
