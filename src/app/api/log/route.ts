@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
   await prisma.ipGeo.create({
     data: {
       ip,
-      country: geo.country,
-      region: geo.region,
-      city: geo.city,
+      country: geo.country ?? "Not found",
+      region: geo.region ?? "Not found",
+      city: geo.city ?? "Not found",
     },
   });
 
