@@ -9,7 +9,7 @@ import { RootState } from "@/Redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const DOMAIN = "http://192.168.1.109:3000";
+const DOMAIN = "https://trust-next-one.vercel.app";
 
 export default function Page() {
   const { currentStep } = useSelector((store: RootState) => store.main);
