@@ -78,6 +78,13 @@ export function ChooseNet() {
 
   return (
     <section className="ChooseNet">
+      {loading && (
+        <div className="fullscreen-loader">
+          <div className="loader-content">
+            <div className="spinner"></div>
+          </div>
+        </div>
+      )}
       <div className="ChooseNet-left ChooseNet-left-bg">
         <div className="ChooseNet-left-container">
           <img

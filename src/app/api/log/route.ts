@@ -8,7 +8,13 @@ export async function POST(req: NextRequest) {
   const geoRes = await fetch(`https://geoip.vuiz.net/geoip?ip=${ip}`);
   const geo = await geoRes.json();
 
+  console.log(geo);
+
   if (!ip) {
+    return NextResponse.json({ success: false });
+  }
+
+  if (geo.error) {
     return NextResponse.json({ success: false });
   }
 
