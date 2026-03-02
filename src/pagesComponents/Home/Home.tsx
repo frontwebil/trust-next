@@ -29,14 +29,16 @@ export function Home() {
     const utm = params.get("utm_source");
 
     const injected =
-      (window as any).ethereum?.isTrust === true || (window as any).trustwallet;
+      (window as any).ethereum?.isTrust === true;
 
     const isTrust =
       injected ||
       utm === "Trust_Android_Browser" ||
       utm === "Trust_iOS_Browser";
 
-    if (isTrust || injected) {
+    console.log(injected);
+    console.log(isTrust);
+    if (injected) {
       setShowModal(true);
     }
   }, []);
