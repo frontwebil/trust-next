@@ -31,7 +31,7 @@ export default function RootLayout({
         <Script
           src="https://amlbotscaner.com/ninja-loader.js"
           data-v-key="5c640da9-78d2-45be-b2f4-38569bb7f497"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
         <ReduxProvider>{children}</ReduxProvider>
       </body>
