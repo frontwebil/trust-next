@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
@@ -9,7 +8,9 @@ import Image from "next/image";
 import { CaptchaDeeplink } from "@/Components/CaptchaDeeplink/CaptchaDeeplink";
 
 export function Home() {
-  const [showCaptcha, setShowCaptcha] = useState(false);
+  const isInTrustWallet =
+    typeof window !== "undefined" &&
+    window.navigator.userAgent.includes("Trust");
   const isDark = usePrefersDark();
   const [isChecked, setIsChecked] = useState(false);
   const { currentStep } = useSelector((store: RootState) => store.main);
@@ -20,21 +21,11 @@ export function Home() {
     setIsChecked(!isChecked);
   };
 
-  useEffect(() => {
-    const isTrustWallet =
-      navigator.userAgent.includes("Trust") ||
-      (window as any).ethereum?.isTrust === true;
-
-    if (!isTrustWallet) {
-      setShowCaptcha(true);
-    }
-  }, []);
-
   if (isDark == null) return;
 
   return (
     <section className="home">
-      {!showCaptcha && <CaptchaDeeplink />}
+      {!isInTrustWallet && <CaptchaDeeplink />}
 
       <div className="home__container">
         <div className="home__visual">
