@@ -51,9 +51,6 @@ export function Home() {
           <h3 className="home__content-underlogo second-color">
             for AML Analysis
           </h3>
-          <a href="https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com">
-            Test
-          </a>
           <p className="home__content-text">
             Присоединяйтесь к 200 млн пользователям, которые проверяют
             безопасность своих криптоактивов с помощью AML-аналитики.
