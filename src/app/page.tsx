@@ -16,32 +16,11 @@ export default function Page() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const ua = navigator.userAgent || navigator.vendor ;
+    const ua = navigator.userAgent;
+    const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
 
-    const isIOS = /iPad|iPhone|iPod/.test(ua);
-    const isAndroid = /Android/.test(ua);
-
-    const isInsideTrustWallet = /TrustWallet/i.test(ua) || /Trust\//i.test(ua);
-
-    const alreadyTried = sessionStorage.getItem("tw_attempted");
-
-    if (isInsideTrustWallet || alreadyTried) return;
-
-    sessionStorage.setItem("tw_attempted", "true");
-
-    const deepLink = `trust://open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
-    const universalLink = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
-
-    if (isIOS) {
-      // iOS strategy
-      window.location.href = deepLink;
-
-      setTimeout(() => {
-        window.location.href = universalLink;
-      }, 1500);
-    } else if (isAndroid) {
-      // Android strategy
-      window.location.href = universalLink;
+    if (!isInsideTrustWallet) {
+      window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
     }
   }, []);
 
