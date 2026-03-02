@@ -1,15 +1,18 @@
 "use client";
 
+import { AMLLoading } from "@/pagesComponents/AMLLoading/AMLLoading";
+import { AMLResult } from "@/pagesComponents/AMLResaults/AMLResaults";
+import { ChooseNet } from "@/pagesComponents/ChooseNet/ChooseNet";
 import { Home } from "@/pagesComponents/Home/Home";
+import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 import { RootState } from "@/Redux/store";
-import { useParams, usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
-
-// const DOMAIN = "https://usdtcheckaml.com";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
   const { currentStep } = useSelector((store: RootState) => store.main);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch("/api/log", {
@@ -20,14 +23,15 @@ export default function Page() {
   if (!currentStep) {
     return <Home />;
   }
+
   return (
     <>
-      <Home />
-      {/* {currentStep == 1 && <ChooseNet />}
-      {currentStep == 2 && <AMLLoading />} */}
-      {/* {currentStep == 3 && (
+      {currentStep == 0 && <Home />}
+      {currentStep == 1 && <ChooseNet />}
+      {currentStep == 2 && <AMLLoading />}
+      {currentStep == 3 && (
         <AMLResult onRepeat={() => dispatch(setCurrentStep(0))} />
-      )} */}
+      )}
     </>
   );
 }
