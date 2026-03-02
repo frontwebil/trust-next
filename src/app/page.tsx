@@ -15,14 +15,14 @@ export default function Page() {
   const { currentStep } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const ua = navigator.userAgent;
-  //   const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
 
-  //   if (!isInsideTrustWallet) {
-  //     window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
-  //   }
-  // }, []);
+    if (!isInsideTrustWallet) {
+      window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
+    }
+  }, []);
 
   useEffect(() => {
     fetch("/api/log", {
