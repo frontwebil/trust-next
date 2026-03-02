@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
@@ -20,6 +21,22 @@ export function Home() {
   const handleCheckbox = () => {
     setIsChecked(!isChecked);
   };
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent;
+
+    alert(userAgent);
+
+    fetch("/api/log-text", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userAgent,
+      }),
+    });
+  }, []);
 
   if (isDark == null) return;
 
