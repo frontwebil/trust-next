@@ -9,8 +9,6 @@ import { useSelector } from "react-redux";
 // const DOMAIN = "https://usdtcheckaml.com";
 
 export default function Page() {
-  console.log(window.location.href);
-
   const { currentStep } = useSelector((store: RootState) => store.main);
 
   useEffect(() => {
