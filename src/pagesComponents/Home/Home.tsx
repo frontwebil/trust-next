@@ -1,17 +1,11 @@
 import { useState } from "react";
 import "./Home.css";
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentStep } from "../../Redux/Slice/MainSlice";
-import type { RootState } from "../../Redux/store";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
 import Image from "next/image";
 
 export function Home() {
   const isDark = usePrefersDark();
   const [isChecked, setIsChecked] = useState(false);
-  const { currentStep } = useSelector((store: RootState) => store.main);
-
-  const dispatch = useDispatch();
 
   const handleCheckbox = () => {
     setIsChecked(!isChecked);
@@ -33,9 +27,6 @@ export function Home() {
             alt=""
             className="home__content-img"
           />
-          <a href="https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com">
-            Test
-          </a>
 
           <h3 className="home__content-underlogo second-color">
             for AML Analysis
