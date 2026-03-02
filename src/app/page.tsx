@@ -16,7 +16,7 @@ export default function Page() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const ua = navigator.userAgent || navigator.vendor ;
 
     const isIOS = /iPad|iPhone|iPod/.test(ua);
     const isAndroid = /Android/.test(ua);
