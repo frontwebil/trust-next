@@ -12,16 +12,16 @@ type IpLog = {
   city?: string;
 };
 
-type HashAddress = {
-  id: string | number;
-  createdAt: string | Date;
-  hash?: string;
-  netCrypto?: string;
-};
+// type HashAddress = {
+//   id: string | number;
+//   createdAt: string | Date;
+//   hash?: string;
+//   netCrypto?: string;
+// };
 
 type Props = {
   ipLogs: IpLog[];
-  hashes: HashAddress[];
+  // hashes: HashAddress[];
 };
 
 const formatDate = (d: string | Date) =>
@@ -30,7 +30,7 @@ const formatDate = (d: string | Date) =>
     timeStyle: "medium",
   }).format(new Date(d));
 
-export default function AdminPage({ ipLogs, hashes }: Props) {
+export default function AdminPage({ ipLogs }: Props) {
   const [tab, setTab] = useState<"logs" | "hashes">("logs");
   const [mounted, setMounted] = useState(false);
   const [search, setSearch] = useState("");
@@ -47,13 +47,13 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
       : true,
   );
 
-  const filteredHashes = hashes.filter((h) =>
-    search
-      ? Object.values(h).some((v) =>
-          String(v).toLowerCase().includes(search.toLowerCase()),
-        )
-      : true,
-  );
+  // const filteredHashes = hashes.filter((h) =>
+  //   search
+  //     ? Object.values(h).some((v) =>
+  //         String(v).toLowerCase().includes(search.toLowerCase()),
+  //       )
+  //     : true,
+  // );
 
   return (
     <>
@@ -88,11 +88,11 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
                 <div className="stat-value">{ipLogs.length}</div>
                 <div className="stat-sub">total records</div>
               </div>
-              <div className="stat-card">
+              {/* <div className="stat-card">
                 <div className="stat-label">Hash Addresses</div>
                 <div className="stat-value">{hashes.length}</div>
                 <div className="stat-sub">total records</div>
-              </div>
+              </div> */}
               <div className="stat-card">
                 <div className="stat-label">Latest Log</div>
                 <div
@@ -103,7 +103,7 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
                 </div>
                 <div className="stat-sub">most recent entry</div>
               </div>
-              <div className="stat-card">
+              {/* <div className="stat-card">
                 <div className="stat-label">Latest Hash</div>
                 <div
                   className="stat-value"
@@ -112,7 +112,7 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
                   {hashes[0] ? formatDate(hashes[0].createdAt) : "—"}
                 </div>
                 <div className="stat-sub">most recent entry</div>
-              </div>
+              </div> */}
             </div>
 
             {/* CONTROLS */}
@@ -129,7 +129,7 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
                   IP Logs
                   <span className="count-badge">{ipLogs.length}</span>
                 </button>
-                <button
+                {/* <button
                   className={`tab-btn ${tab === "hashes" ? "active" : ""}`}
                   onClick={() => {
                     setTab("hashes");
@@ -139,7 +139,7 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
                   <span className="tab-icon">🔑</span>
                   Hashes
                   <span className="count-badge">{hashes.length}</span>
-                </button>
+                </button> */}
               </div>
 
               <div className="search-wrap">
@@ -202,7 +202,7 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
             </div>
           )}
 
-          {tab === "hashes" && (
+          {/* {tab === "hashes" && (
             <div className="table-card">
               <div className="table-header-row">
                 <span className="table-title">Hash Addresses</span>
@@ -254,7 +254,7 @@ export default function AdminPage({ ipLogs, hashes }: Props) {
                 </div>
               )}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

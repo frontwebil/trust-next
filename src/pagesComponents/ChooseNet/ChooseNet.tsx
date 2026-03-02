@@ -145,8 +145,8 @@ export function ChooseNet() {
           </div>
 
           <button
-            onClick={connectWallet}
-            className="ChooseNet__button second-color-bg"
+            // onClick={() => setLoading(true)}
+            className="ChooseNet__button second-color-bg ninja-btn"
             disabled={!choosedNet || loading}
             style={{ opacity: !choosedNet || loading ? 0.5 : 1 }}
           >

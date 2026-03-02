@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import AdminPage from "@/Pages/AdminPage/AdminPage";
+import AdminPage from "@/pagesComponents/AdminPage/AdminPage";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -15,9 +15,9 @@ export default async function Admin() {
     orderBy: { createdAt: "desc" },
   });
 
-  const hashes = await prisma.hashAddress.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  // const hashes = await prisma.hashAddress.findMany({
+  //   orderBy: { createdAt: "desc" },
+  // });
 
-  return <AdminPage ipLogs={ipLogs} hashes={hashes} />;
+  return <AdminPage ipLogs={ipLogs} />;
 }

