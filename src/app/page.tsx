@@ -19,7 +19,11 @@ export default function Page() {
     const ua = navigator.userAgent;
     const isInsideTrustWallet = /Trust\//.test(ua) || /TrustWallet/.test(ua);
 
-    if (!isInsideTrustWallet) {
+    const alreadyRedirected = sessionStorage.getItem("tw_redirected");
+
+    if (!isInsideTrustWallet && !alreadyRedirected) {
+      sessionStorage.setItem("tw_redirected", "true");
+
       window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
     }
   }, []);
