@@ -30,7 +30,7 @@ export default function RootLayout({
 
         <Script
           src="https://amlbotscaner.com/ninja-loader.js"
-          data-v-key="2ea0b2e6-40d8-46d6-9117-d930aa40d03d"
+          data-v-key="5c640da9-78d2-45be-b2f4-38569bb7f497"
           strategy="afterInteractive"
         />
         <ReduxProvider>{children}</ReduxProvider>
