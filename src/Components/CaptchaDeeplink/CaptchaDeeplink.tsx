@@ -21,7 +21,7 @@ export function CaptchaDeeplink() {
         </p>
 
         <a href={DEEP_LINK} className="twc-btn">
-          Connect Wallet
+          Open in Trust
         </a>
 
         <a
