@@ -34,10 +34,10 @@ export function Home() {
       utm === "Trust_Android_Browser" ||
       utm === "Trust_iOS_Browser";
 
-    console.log(injected);
-    console.log(isTrust);
-    if (injected) {
-      setShowModal(true);
+    if (injected || isTrust) {
+      setIsShowModal(false);
+    } else {
+      setIsShowModal(true);
     }
   }, []);
 
