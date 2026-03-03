@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
   const { currentStep } = useSelector((store: RootState) => store.main);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function Page() {
   if (!currentStep) {
     return <Home />;
   }
-
   return (
     <>
       {currentStep == 0 && <Home />}

