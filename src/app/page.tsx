@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { AMLLoading } from "@/pagesComponents/AMLLoading/AMLLoading";
@@ -7,15 +6,12 @@ import { ChooseNet } from "@/pagesComponents/ChooseNet/ChooseNet";
 import { Home } from "@/pagesComponents/Home/Home";
 import { setCurrentStep } from "@/Redux/Slice/MainSlice";
 import { RootState } from "@/Redux/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-
 export default function Page() {
-
   const { currentStep } = useSelector((store: RootState) => store.main);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     fetch("/api/log", {

