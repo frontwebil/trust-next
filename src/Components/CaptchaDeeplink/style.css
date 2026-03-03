@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primary: #0500ff;
+  --color-primary-shadow: rgba(5, 0, 255, 0.22);
+  --color-text: #1a1a2e;
+  --color-muted: #6b7280;
+  --color-footer: #b0b0b0;
+  --color-bg: #f7f8ff;
+  --color-white: #ffffff;
+  --font-main: "Sora", sans-serif;
+  --radius-btn: 100px;
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.twc-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px 16px 80px;
+  position: relative;
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      rgba(5, 0, 255, 0.07) 0%,
+      transparent 70%
+    ),
+    var(--color-bg);
+}
+
+/* ── Card ── */
+.twc-card {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  border-radius: 28px;
+  padding: 20px;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Logo ── */
+.twc-logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 28px;
+  margin: 0 auto 20px;
+}
+
+@keyframes logoIn {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Typography ── */
+.twc-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.twc-desc {
+  font-size: 16px;
+  color: #707070;
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Primary button ── */
+.twc-btn {
+  display: block;
+  background-color: #0500ff;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 16px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 12px rgba(5, 0, 255, 0.2);
+}
+
+.twc-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px var(--color-primary-shadow);
+}
+
+.twc-btn:hover::after {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.twc-btn:active {
+  transform: scale(0.97) translateY(0);
+  box-shadow: 0 3px 10px var(--color-primary-shadow);
+}
+
+/* ── Secondary link ── */
+.twc-secondary {
+  display: inline-block;
+  margin-top: 20px;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity var(--transition);
+}
+
+.twc-secondary:hover {
+  opacity: 0.72;
+}
+
+/* ── Footer ── */
+.twc-footer {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: var(--color-footer);
+  white-space: nowrap;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .twc-card {
+    padding: 36px 24px 32px;
+    border-radius: 22px;
+  }
+
+  .twc-title {
+    font-size: 20px;
+  }
+
+  .twc-desc {
+    font-size: 14px;
+  }
+}

